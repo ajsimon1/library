@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+        <title>Ad-Lib</title>
+
+        {% block navbar %}
+        <div class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/"><img src="/static/img/ajs_black_75.75.png"</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        {% if session['logged_in'] == True %}
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+        <!-- <header><p>Logged in as {{ player }}</p></p.></header> -->
+    </head>
+    <div class='container'>
+        {% if session['logged_in'] == True %}
+            <div class="container"><p>Logged in as {{ session['username'] }}</p></div>
+        {% endif %}
+      <body>
+        {% block content %}
+          <div class="container">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+          </div>
+        {% endblock %}
+      </body>
+    </div>
+</html>
