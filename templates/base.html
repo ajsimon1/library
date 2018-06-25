@@ -17,12 +17,10 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/"><img src="/static/img/ajs_black_75.75.png"</a>
                 </div>
-                <div class="navbar-collapse collapse">
+                <div class="navbar-collapse collapse text-center">
                     <ul class="nav navbar-nav">
                         <li><a href="{{ url_for('index') }}">Home</a></li>
-                        {% if session['logged_in'] == True %}
-                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                        {% endif %}
+
                     </ul>
                 </div>
             </div>
@@ -34,7 +32,7 @@
         {% if session['logged_in'] == True %}
             <div class="container"><p>Logged in as {{ session['username'] }}</p></div>
         {% endif %}
-      <body>
+      <bo dy>
         {% block content %}
           <div class="container">
             {% for message in get_flashed_messages() %}

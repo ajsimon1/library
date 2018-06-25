@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% from 'macros.html' import render_field %}
 {% block content %}
-    <!-- {{ super() }} -->
+  {{ super() }}
     <h1>Enter ISBN</h1>
-    <form action='' method='post' name='book_search'>
+    <form class = "text-center" action='' method='post' name='book_search'>
         {{ form.hidden_tag() }}
         {% for field in form %}
             {{ render_field(field) }}

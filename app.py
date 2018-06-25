@@ -3,12 +3,15 @@ import requests
 import json
 from flask_sqlalchemy import SQLAlchemy
 from forms import BookSearchForm
+from config import Config
+from flask_migrate import Migrate
 
 num = 9781593276041
 
 app = Flask(__name__)
+app.config.from_object(Config)
 db = SQLAlchemy(app)
-app.config.from_object('config')
+migrate = Migrate(app, db)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
