@@ -6,7 +6,7 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY')
     db_user = os.environ.get('PGUSER')
     db_pass = os.environ.get('PGPASSWORD')
-    db_local = os.environ.get('DATABASE_URI')
+    db_local = os.environ.get('DATABASE_URL')
     WTF_CSRF_ENABLED = True
 
     # database settings

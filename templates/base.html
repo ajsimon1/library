@@ -43,22 +43,28 @@
         {% endblock %}
         <!-- <header><p>Logged in as {{ player }}</p></p.></header> -->
     </head>
-    <div class='container'>
-        {% if session['logged_in'] == True %}
-            <div class="container"><p>Logged in as {{ session['username'] }}</p></div>
-        {% endif %}
-      <body>
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <ul class=flashes>
-            {% for message in messages %}
-              <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
+      <div class='container'>
         {% block content %}
-        {% endblock %}
-      </body>
+          {% if session['logged_in'] == True %}
+              <div class="container"><p>Logged in as {{ session['username'] }}</p></div>
+          {% endif %}
+        <body>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <!-- <strong>Title</strong> --> {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <!-- Optional JavaScript -->
+          <!-- jQuery first, then Bootstrap JS -->
+          <script src="http://code.jquery.com/jquery-latest.js"></script>
+          <script src="/static/js/bootstrap.min.js"></script>
+        </body>
+      {% endblock %}
     </div>
 </html>
