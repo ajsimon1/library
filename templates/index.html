@@ -9,7 +9,7 @@
             {{ render_field(field) }}
         {% endfor %}
         <br>
-        <p><input type='submit' value='Search'></p>
+        <input type='submit' name='search' class = 'btn btn-primary' value = 'Search'>
     </form>
     <hr>
 {% if data %}
@@ -27,7 +27,12 @@
             </td>
         </tr>
     </table>
+    <br>
+    <form>
+      <input type="submit" name='add' class="btn btn-secondary" value='Add'>
+    </form>
 {% else %}
     <h5>There are no results to display</h5>
 {% endif %}
+
 {% endblock %}
