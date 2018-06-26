@@ -4,7 +4,8 @@ import requests
 import models
 import psycopg2
 
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import (Flask, render_template, request, flash, redirect,
+                    url_for, session)
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -30,13 +31,14 @@ def index():
             isbn = str(form.isbn.data)
             response = requests.get(base+isbn, headers=headers)
             json_resp = json.loads(response.text)
+            session['isbndb_results'] = json_resp
             return render_template('index.html', data=json_resp, form=form)
         elif request.form.get('add') == 'Add':
             book = models.Book(
-                author = json_resp['book']['authors'],
-                isbn = json_resp['book']['isbn13'],
-                date_published = json_resp['book']['publish_date'],
-                title = json_resp['book']['title']
+                author = session['isbndb_results']['book']['authors'],
+                isbn = session['isbndb_results']['book']['isbn13'],
+                date_published = session['isbndb_results']['book']['date_published'],
+                title = session['isbndb_results']['book']['title'],
             )
             db.session.add(book)
             db.session.commit()
