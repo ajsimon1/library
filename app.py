@@ -1,7 +1,8 @@
 
 import json
-import requests
+import os
 import psycopg2
+import requests
 
 from flask import (Flask, render_template, request, flash, redirect,
                     url_for, session)
@@ -21,6 +22,13 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+# grab environ variables
+db_name = os.environ.get('DB_NAME')
+db_user = os.environ.get('PGUSER')
+db_pass = os.environ.get('PGPASSWORD')
+db_host = os.environ.get('HOST')
+
 
 # import models after db instantiation
 import models
@@ -58,7 +66,12 @@ def index():
 
 @app.route('/library')
 def library():
-    conn = psycopg2.connect("dbname='library' user='postgres' host='localhost' password='postgres'")
+    conn = psycopg2.connect(
+        dbname = db_name,
+        user = db_user,
+        password = db_pass,
+        host = db_host,
+    )
     cur = conn.cursor()
     cur.execute('SELECT * FROM books')
     library = cur.fetchall()
