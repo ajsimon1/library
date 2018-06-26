@@ -1,7 +1,6 @@
 
 import json
 import requests
-import models
 import psycopg2
 
 from flask import (Flask, render_template, request, flash, redirect,
@@ -22,6 +21,9 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+# import models after db instantiation
+import models
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
