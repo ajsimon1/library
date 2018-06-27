@@ -67,10 +67,10 @@ def index():
 @app.route('/library')
 def library():
     conn = psycopg2.connect(
-        dbname = db_name,
-        user = db_user,
-        password = db_pass,
-        host = db_host,
+        dbname = os.environ.get('DB_NAME'),
+        password = os.environ.get('PGPASSWORD'),
+        user = os.environ.get('PGUSER'),
+        host = os.environ.get('HOST'),
     )
     cur = conn.cursor()
     cur.execute('SELECT * FROM books')
