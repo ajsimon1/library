@@ -73,7 +73,7 @@ def library():
         host = os.environ.get('HOST'),
     )
     cur = conn.cursor()
-    cur.execute('SELECT * FROM books')
+    cur.execute('SELECT * FROM books;')
     library = cur.fetchall()
     return render_template('library.html', library=library)
 

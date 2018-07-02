@@ -7,6 +7,7 @@ class Book(db.Model):
     isbn = db.Column(db.String(20), unique=True, index=True)
     date_published = db.Column(db.DateTime())
     title = db.Column(db.String(255), index=True)
+    # returned list from 'fetchall', matches this order
 
     def __repr__(self):
         return '<Book {} by {}>'.format(self.title, self.author)
