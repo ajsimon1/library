@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% from 'macros.html' import render_field %}
 {% block content %}
-    <!-- {{ super() }} -->
+  {{ super() }}
     <h1>Enter ISBN</h1>
-    <form action='' method='post' name='book_search'>
+    <form class = "text-center" action='' method='post' name='book_search'>
         {{ form.hidden_tag() }}
         {% for field in form %}
             {{ render_field(field) }}
         {% endfor %}
         <br>
-        <p><input type='submit' value='Search'></p>
+        <input type='submit' name='search' class = 'btn btn-primary' value = 'Search'>
     </form>
     <hr>
 {% if data %}
@@ -27,7 +27,12 @@
             </td>
         </tr>
     </table>
+    <br>
+    <form method='post' name='add-to-db'>
+      <input type="submit" name='add' class="btn btn-secondary" value='Add'>
+    </form>
 {% else %}
     <h5>There are no results to display</h5>
 {% endif %}
+
 {% endblock %}

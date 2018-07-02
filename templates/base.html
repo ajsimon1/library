@@ -10,43 +10,61 @@
         <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
 
         <title>Ad-Lib</title>
-
         {% block navbar %}
-        <div class="navbar navbar-inverse" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/"><img src="/static/img/ajs_black_75.75.png"</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="navbar-brand" href="/">Ad-Lib</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('library') }}">Library</a>
+              </li>
+              <!--
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown08">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="{{ url_for('index') }}">Home</a></li>
-                        {% if session['logged_in'] == True %}
-                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </div>
+              </li>
+            -->
+            </ul>
+          </div>
+        </nav>
         {% endblock %}
         <!-- <header><p>Logged in as {{ player }}</p></p.></header> -->
     </head>
-    <div class='container'>
-        {% if session['logged_in'] == True %}
-            <div class="container"><p>Logged in as {{ session['username'] }}</p></div>
-        {% endif %}
-      <body>
+      <div class='container'>
         {% block content %}
-          <div class="container">
-            {% for message in get_flashed_messages() %}
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+          {% if session['logged_in'] == True %}
+              <div class="container"><p>Logged in as {{ session['username'] }}</p></div>
+          {% endif %}
+        <body>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <!-- <strong>Title</strong> --> {{ message }}
                 </div>
-            {% endfor %}
-          </div>
-        {% endblock %}
-      </body>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <!-- Optional JavaScript -->
+          <!-- jQuery first, then Bootstrap JS -->
+          <script src="http://code.jquery.com/jquery-latest.js"></script>
+          <script src="/static/js/bootstrap.min.js"></script>
+        </body>
+      {% endblock %}
     </div>
 </html>
