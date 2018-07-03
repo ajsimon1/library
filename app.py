@@ -1,4 +1,3 @@
-
 import json
 import os
 import psycopg2
@@ -52,10 +51,13 @@ def index():
                 flash('There was an issue locating that ISBN...idiot', 'warning')
         elif request.form.get('add') == 'Add':
             pub_date_parsed = parse(session['isbndb_results']['book']['date_published'])
+            bad_chars = '[]{}\"\''
+            s = str(session['isbndb_results']['book']['authors'])
+            auth = "".join(c for c in s if c not in bad_chars)
             book = models.Book(
-                author = session['isbndb_results']['book']['authors'],
+                author = auth,
                 isbn = session['isbndb_results']['book']['isbn13'],
-                date_published = pub_date_parsed.strftime('%Y-%m-%d'),
+                date_published = pub_date_parsed,
                 title = session['isbndb_results']['book']['title'],
             )
             db.session.add(book)

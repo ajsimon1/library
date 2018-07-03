@@ -12,10 +12,10 @@
   <tbody class="table-striped">
   {% for item in library %}
     <tr>
-      <th scope="row">{{ item[2]}}</th>
+      <th scope="row">{{ item[2] }}</th>
       <th scope="row">{{ item[1] }}</th>
       <th scope="row">{{ item[4] }}</th>
-      <th scope="row">{{ item[3] }}</th>
+      <th scope="row">{{ item[3].strftime('%b %d, %Y') }}</th>
     </tr>
   {% endfor %}
   </tbody>
