@@ -14,7 +14,11 @@
     <tr>
       <th scope="row">{{ item[2] }}</th>
       <th scope="row">{{ item[1] }}</th>
-      <th scope="row">{{ item[4] }}</th>
+      <th scope="row">
+        <a class="text-info" href="http://www.google.com/search?q={{item[4].replace(' ','+')}}" target="_blank">
+          {{ item[4] }}
+        </a>
+      </th>
       <th scope="row">{{ item[3].strftime('%b %d, %Y') }}</th>
     </tr>
   {% endfor %}

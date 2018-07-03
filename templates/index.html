@@ -23,7 +23,9 @@
                 {{ data['book']['authors'][0] }}
             </td>
             <td>
+              <a class="text-info" href="http://www.google.com/search?q={{data['book']['title'].replace(' ','+')}}" target="_blank">
                 {{ data['book']['title'] }}
+              </a>
             </td>
         </tr>
     </table>
