@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<table class="table table-hover table-sm">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">ISBN</th>
+      <th scope="col">Author</th>
+      <th scope="col">Title</th>
+      <th scope="col">Date Published</th>
+    </tr>
+  </thead>
+  <tbody class="table-striped">
+  {% for item in library %}
+    <tr>
+      <th scope="row">{{ item[2] }}</th>
+      <th scope="row">{{ item[1] }}</th>
+      <th scope="row">
+        <a class="text-info" href="http://www.google.com/search?q={{item[4].replace(' ','+')}}" target="_blank">
+          {{ item[4] }}
+        </a>
+      </th>
+      <th scope="row">{{ item[3].strftime('%b %d, %Y') }}</th>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
