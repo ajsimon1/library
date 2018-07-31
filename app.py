@@ -8,7 +8,7 @@ from flask import (Flask, render_template, request, flash, redirect,
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config
-from forms import BookSearchForm
+from forms import ISBNSearchForm, KeywordSearchForm
 from dateutil.parser import parse
 
 # TODO configure database for heroku
@@ -34,7 +34,8 @@ import models
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    form = BookSearchForm()
+    isbn_form = ISBNSearchForm()
+    keyword_form = KeywordSearchForm()
     base='https://api.isbndb.com/book/'
     isbn_key = 'o63bZoobFbrynZDVR6fX3mmsRerF0NR4aKwRkJI0'
     headers = {'X-API-KEY': isbn_key}
@@ -64,7 +65,9 @@ def index():
             db.session.commit()
             flash('That shit got added yo...', 'info')
             return redirect(url_for('index'))
-    return render_template('index.html', form=form)
+    return render_template('index.html',
+                            isbn_form=isbn_form,
+                            keyword_form=keyword_form)
 
 @app.route('/library')
 def library():

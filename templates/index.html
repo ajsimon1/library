@@ -3,13 +3,20 @@
 {% block content %}
   {{ super() }}
     <h1>Enter ISBN</h1>
-    <form class = "text-center" action='' method='post' name='book_search'>
-        {{ form.hidden_tag() }}
-        {% for field in form %}
+    <form class = "text-center" action='' method='post' name='isbn_search'>
+        {{ isbn_form.hidden_tag() }}
+        {% for field in isbn_form %}
             {{ render_field(field) }}
         {% endfor %}
         <br>
         <input type='submit' name='search' class = 'btn btn-primary' value = 'Search'>
+    </form>
+    <p class="text-center" id="auth-search">Search by keywords...<a><span class="caret"> &#10515;</span></a></p>
+    <form class="text-center" id="kw_search" action="" method="post">
+      {{ keyword_form.hidden_tag() }}
+      {% for field in keyword_form %}
+          {{ render_field(field) }}
+      {% endfor %}
     </form>
     <hr>
 {% if data %}

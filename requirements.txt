@@ -1,23 +1,8 @@
-<<<<<<< HEAD
-=======
 alembic==0.9.9
->>>>>>> 94bf29d2be7593992a5ecac3b2dd2f48e7eae6cc
 certifi==2018.4.16
 chardet==3.0.4
 click==6.7
 Flask==1.0.2
-<<<<<<< HEAD
-Flask-WTF==0.14.2
-idna==2.7
-itsdangerous==0.24
-Jinja2==2.10
-MarkupSafe==1.0
-pipenv==2018.5.18
-requests==2.19.1
-urllib3==1.23
-virtualenv==15.1.0
-virtualenv-clone==0.3.0
-=======
 Flask-Migrate==2.2.1
 Flask-SQLAlchemy==2.3.2
 Flask-WTF==0.14.2
@@ -34,6 +19,5 @@ requests==2.19.1
 six==1.11.0
 SQLAlchemy==1.2.8
 urllib3==1.23
->>>>>>> 94bf29d2be7593992a5ecac3b2dd2f48e7eae6cc
 Werkzeug==0.14.1
 WTForms==2.2.1
