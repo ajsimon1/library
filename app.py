@@ -41,15 +41,17 @@ def index():
     headers = {'X-API-KEY': isbn_key}
     if request.method == 'POST':
         if request.form.get('search') == 'Search':
-            isbn = str(form.isbn.data)
-            try:
-                response = requests.get(base+isbn, headers=headers)
-                json_resp = json.loads(response.text)
-                session['isbndb_results'] = json_resp
-                flash('Info for that shit below...', 'info')
-                return render_template('index.html', data=json_resp, form=form)
-            except:
+            isbn = str(request.form['isbn'])
+            response = requests.get(base+isbn, headers=headers)
+            json_resp = json.loads(response.text)
+            session['isbndb_results'] = json_resp
+            if 'errorMessage' in json_resp:
                 flash('There was an issue locating that ISBN...idiot', 'warning')
+            else:
+                flash('Info for that shit below...', 'info')
+                return render_template('index.html',
+                                       data=json_resp,
+                                       isbn_form=isbn_form)
         elif request.form.get('add') == 'Add':
             pub_date_parsed = parse(session['isbndb_results']['book']['date_published'])
             bad_chars = '[]{}\"\''
@@ -81,6 +83,11 @@ def library():
     cur.execute('SELECT * FROM books;')
     library = cur.fetchall()
     return render_template('library.html', library=library)
+
+@app.route('/add_book')
+def add_book():
+    # TODO finish this template
+    return render_template('add_book.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

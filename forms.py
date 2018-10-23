@@ -7,3 +7,7 @@ class ISBNSearchForm(Form):
 
 class KeywordSearchForm(Form):
     keywords = StringField('keywords', validators=[DataRequired()])
+
+class AddBookManual(Form):
+    # TODO test pinging api in terminal, add approriate fields to form
+    title = StringField('title', validators=[DataRequired()])

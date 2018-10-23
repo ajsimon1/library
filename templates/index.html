@@ -3,21 +3,16 @@
 {% block content %}
   {{ super() }}
     <h1>Enter ISBN</h1>
-    <form class = "text-center" action='' method='post' name='isbn_search'>
+    <form class="text-center" action='' method='post' name='isbn_search'>
         {{ isbn_form.hidden_tag() }}
         {% for field in isbn_form %}
             {{ render_field(field) }}
         {% endfor %}
         <br>
         <input type='submit' name='search' class = 'btn btn-primary' value = 'Search'>
+        <input type="reset" class = 'btn btn-secondary' style="padding-left: 20px; padding-right: 20px;" value="Clear">
     </form>
-    <p class="text-center" id="auth-search">Search by keywords...<a><span class="caret"> &#10515;</span></a></p>
-    <form class="text-center" id="kw_search" action="" method="post">
-      {{ keyword_form.hidden_tag() }}
-      {% for field in keyword_form %}
-          {{ render_field(field) }}
-      {% endfor %}
-    </form>
+    <!-- Add section for key word search / search by author / add book manually-->
     <hr>
 {% if data %}
     <table>
@@ -27,11 +22,11 @@
         </tr>
         <tr>
             <td style="padding-right: 50px;">
-                {{ data['book']['authors'][0] }}
+                {{ data['book']['authors'][0]|safe }}
             </td>
             <td>
               <a class="text-info" href="http://www.google.com/search?q={{data['book']['title'].replace(' ','+')}}" target="_blank">
-                {{ data['book']['title'] }}
+                {{ data['book']['title']|safe }}
               </a>
             </td>
         </tr>

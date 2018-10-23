@@ -12,11 +12,11 @@
   <tbody class="table-striped">
   {% for item in library %}
     <tr>
-      <th scope="row">{{ item[2] }}</th>
-      <th scope="row">{{ item[1] }}</th>
+      <th scope="row">{{ item[2]|safe }}</th>
+      <th scope="row">{{ item[1]|safe }}</th>
       <th scope="row">
         <a class="text-info" href="http://www.google.com/search?q={{item[4].replace(' ','+')}}" target="_blank">
-          {{ item[4] }}
+          {{ item[4]|safe }}
         </a>
       </th>
       <th scope="row">{{ item[3].strftime('%b %d, %Y') }}</th>
