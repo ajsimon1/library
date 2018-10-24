@@ -14,6 +14,7 @@ from dateutil.parser import parse
 # TODO configure database for heroku
 # TODO you're missing a javascript plugin to dismiss the alerts
 # see https://getbootstrap.com/docs/4.0/components/alerts/#dismissing
+# note if pipfile out of date run pipenv lock in cmd, commit and push
 
 num = 9780061122910
 
