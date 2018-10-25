@@ -37,13 +37,16 @@ import models
 def index():
     isbn_form = ISBNSearchForm()
     keyword_form = KeywordSearchForm()
-    base='https://api.isbndb.com/book/'
+    base_book='https://api.isbndb.com/book/'
+    base_kw='https://api.isbndb.com/books/'
+    base_auth='https://api.isbndb.com/author/'
     isbn_key = 'o63bZoobFbrynZDVR6fX3mmsRerF0NR4aKwRkJI0'
     headers = {'X-API-KEY': isbn_key}
+    max_return='?pageSize=25'
     if request.method == 'POST':
         if request.form.get('search') == 'Search':
             isbn = str(request.form['isbn'])
-            response = requests.get(base+isbn, headers=headers)
+            response = requests.get(base_book+isbn, headers=headers)
             json_resp = json.loads(response.text)
             session['isbndb_results'] = json_resp
             if 'errorMessage' in json_resp:
@@ -53,6 +56,29 @@ def index():
                 return render_template('index.html',
                                        data=json_resp,
                                        isbn_form=isbn_form)
+        elif request.form.get('alt-search') == 'Alt-Search':
+            if request.form['keyword']:
+                kw = str(request.form['keyword'])
+                response = requests.get(base_kw+kw+max_return, headers=headers)
+                json_resp = json.loads(response.text)
+                session['isbndb_results'] = json_resp
+                if 'errorMessage' in json_resp:
+                    flash('The keyword there was shit, no returned results', 'warning')
+                else:
+                    flash('I got you baby...', 'info')
+            elif request.form['author']:
+                auth = str(request.form['author'])
+                response = requests.get(base_auth+auth+max_return, headers=headers)
+                json_resp = json.loads(response.text)
+                session['isbndb_results'] = json_resp
+                if 'errorMessage' in json_resp:
+                    flash('Don"t know that guy, or gal', 'warning')
+                else:
+                    flash('There he/she is', 'info')
+            return render_template('index.html',
+                                   data=json_resp,
+                                   isbn_form=isbn_form)
+
         elif request.form.get('add') == 'Add':
             pub_date_parsed = parse(session['isbndb_results']['book']['date_published'])
             bad_chars = '[]{}\"\''
