@@ -49,6 +49,7 @@ def index():
             response = requests.get(base_book+isbn, headers=headers)
             json_resp = json.loads(response.text)
             session['isbndb_results'] = json_resp
+            signal='isbn'
             if 'errorMessage' in json_resp:
                 flash('There was an issue locating that ISBN...idiot', 'warning')
             else:
@@ -56,16 +57,18 @@ def index():
                 return render_template('index.html',
                                        data=json_resp,
                                        isbn_form=isbn_form,
-                                       alt_form=alt_form)
+                                       alt_form=alt_form,
+                                       signal=signal)
         elif request.form.get('alt-search') == 'Alt-Search':
             signal = ''
+            # json_resp = None
             if alt_form.keywords.data:
                 kw = str(alt_form.keywords.data)
                 response = requests.get(base_kw+kw+max_return, headers=headers)
                 json_resp = json.loads(response.text)
-                print(json_resp)
                 session['isbndb_results'] = json_resp
-                signal='kw'
+                signal='author'
+                print(json_resp)
                 if 'errorMessage' in json_resp:
                     flash('The keyword there was shit, no returned results', 'warning')
                 else:
@@ -74,7 +77,6 @@ def index():
                 auth = str(alt_form.author.data)
                 response = requests.get(base_auth+auth+max_return, headers=headers)
                 json_resp = json.loads(response.text)
-                print(json_resp)
                 session['isbndb_results'] = json_resp
                 signal='author'
                 if 'errorMessage' in json_resp:

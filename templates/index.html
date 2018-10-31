@@ -10,8 +10,8 @@
         {% endfor %}
         <br>
         <div class="form-group">
-          <input type='submit' name='search' class = 'btn btn-primary' value = 'Search'>
-          <input type="reset" class = 'btn btn-secondary' style="padding-left: 20px; padding-right: 20px;" value="Clear">
+          <input type='submit' name='search' class='btn btn-primary' value='Search'>
+          <input type='refresh' value='Clear' class='btn btn-secondary' style='padding-left: 5px; padding-right: 5px;'>
           <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="alt_search_check">
                 <label class="form-check-label" for="gridCheck">
@@ -37,11 +37,13 @@
 {% if data %}
     <table>
         <tr>
+            <th style="padding-right: 50px;">Add</th>
             <th style="padding-right: 50px;">Author</th>
             <th>Title</th>
         </tr>
           {% if signal == 'isbn' %}
               <tr>
+                  <td><input type="radio" id="add_book_check"></td>
                   <td style="padding-right: 50px;">
                       {{ data['book']['authors'][0]|safe }}
                   </td>
@@ -54,8 +56,9 @@
           {% elif signal == 'author' %}
               {% for item in data['books']%}
                 <tr>
+                    <td><input type="radio" name="one" id="add_book_check"></td>
                     <td style="padding-right: 50px;">
-                        {{ ', '.join(item['authors'])|safe }}
+                        {{ ', '.join(item['authors'][:2])|safe }}
                     </td>
                     <td>
                       <a class="text-info" href="http://www.google.com/search?q={{item['title'].replace(' ','+')}}" target="_blank">
