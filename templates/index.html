@@ -22,14 +22,14 @@
 
     </form>
      <hr>
-    <div class="alt_search">
+    <div class="alt-search">
       <h6>These are the means that are alternate from those mentioned previously...</h6>
-       <form class="form-inline">
-         {{ keyword_form.hidden_tag() }}
-            {% for field in keyword_form %}
+      <form class="form-inline" method="post" name="alt-search">
+         {{ alt_form.hidden_tag() }}
+            {% for field in alt_form %}
                 {{ render_field(field) }}
             {% endfor %}
-          <input type="submit" name="alt-search" class="btn btn-primary mb-2" value="Alt-Search" style="margin-left: 10px;"></button>
+          <input type="submit" name="alt-search" class="btn btn-primary mb-2" value="Alt-Search" style="margin-left: 10px;">
       </form>
       <br>
       <hr>
@@ -40,7 +40,31 @@
             <th style="padding-right: 50px;">Author</th>
             <th>Title</th>
         </tr>
-        <tr>
+          {% if signal == 'isbn' %}
+              <tr>
+                  <td style="padding-right: 50px;">
+                      {{ data['book']['authors'][0]|safe }}
+                  </td>
+                  <td>
+                    <a class="text-info" href="http://www.google.com/search?q={{data['book']['title'].replace(' ','+')}}" target="_blank">
+                      {{ data['book']['title']|safe }}
+                    </a>
+                  </td>
+              <tr>
+          {% elif signal == 'author' %}
+              {% for item in data['books']%}
+                <tr>
+                    <td style="padding-right: 50px;">
+                        {{ ', '.join(item['authors'])|safe }}
+                    </td>
+                    <td>
+                      <a class="text-info" href="http://www.google.com/search?q={{item['title'].replace(' ','+')}}" target="_blank">
+                        {{ item['title']|safe }}
+                      </a>
+                    </td>
+                </tr>
+              {% endfor %}
+          {% elif signal == 'kw' %}
             <td style="padding-right: 50px;">
                 {{ data['book']['authors'][0]|safe }}
             </td>
@@ -49,7 +73,7 @@
                 {{ data['book']['title']|safe }}
               </a>
             </td>
-        </tr>
+          {% endif %}
     </table>
     <br>
     <form method='post' name='add-to-db'>

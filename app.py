@@ -8,7 +8,7 @@ from flask import (Flask, render_template, request, flash, redirect,
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config
-from forms import ISBNSearchForm, KeywordSearchForm
+from forms import ISBNSearchForm, AltSearchForm
 from dateutil.parser import parse
 
 # TODO configure database for heroku
@@ -36,7 +36,7 @@ import models
 @app.route('/', methods=['GET', 'POST'])
 def index():
     isbn_form = ISBNSearchForm()
-    keyword_form = KeywordSearchForm()
+    alt_form = AltSearchForm()
     base_book='https://api.isbndb.com/book/'
     base_kw='https://api.isbndb.com/books/'
     base_auth='https://api.isbndb.com/author/'
@@ -55,29 +55,37 @@ def index():
                 flash('Info for that shit below...', 'info')
                 return render_template('index.html',
                                        data=json_resp,
-                                       isbn_form=isbn_form)
+                                       isbn_form=isbn_form,
+                                       alt_form=alt_form)
         elif request.form.get('alt-search') == 'Alt-Search':
-            if request.form['keyword']:
-                kw = str(request.form['keyword'])
+            signal = ''
+            if alt_form.keywords.data:
+                kw = str(alt_form.keywords.data)
                 response = requests.get(base_kw+kw+max_return, headers=headers)
                 json_resp = json.loads(response.text)
+                print(json_resp)
                 session['isbndb_results'] = json_resp
+                signal='kw'
                 if 'errorMessage' in json_resp:
                     flash('The keyword there was shit, no returned results', 'warning')
                 else:
                     flash('I got you baby...', 'info')
-            elif request.form['author']:
-                auth = str(request.form['author'])
+            elif alt_form.author.data:
+                auth = str(alt_form.author.data)
                 response = requests.get(base_auth+auth+max_return, headers=headers)
                 json_resp = json.loads(response.text)
+                print(json_resp)
                 session['isbndb_results'] = json_resp
+                signal='author'
                 if 'errorMessage' in json_resp:
                     flash('Don"t know that guy, or gal', 'warning')
                 else:
                     flash('There he/she is', 'info')
             return render_template('index.html',
                                    data=json_resp,
-                                   isbn_form=isbn_form)
+                                   alt_form=alt_form,
+                                   isbn_form=isbn_form,
+                                   signal=signal)
 
         elif request.form.get('add') == 'Add':
             pub_date_parsed = parse(session['isbndb_results']['book']['date_published'])
@@ -96,7 +104,8 @@ def index():
             return redirect(url_for('index'))
     return render_template('index.html',
                             isbn_form=isbn_form,
-                            keyword_form=keyword_form)
+                            alt_form=alt_form,
+                            signal=None)
 
 @app.route('/library')
 def library():
