@@ -1,2 +1,10 @@
 {% extends 'base.html' %}
 {% from 'macros.html' import render_field %}
+{% block content %}
+    {{ super() }}
+    <h2>Move the rudder manually by completing the form below</h2>
+    {{ add_book_form.hidden_tag() }}
+    {% for field in add_book_form %}
+        {{ render_field(field) }}
+    {% endfor %}
+{% endblock %}

@@ -34,55 +34,46 @@
       <br>
       <hr>
     </div>
-{% if data %}
-    <table>
-        <tr>
-            <th style="padding-right: 50px;">Add</th>
-            <th style="padding-right: 50px;">Author</th>
-            <th>Title</th>
-        </tr>
-          {% if signal == 'isbn' %}
-              <tr>
-                  <td><input type="radio" id="add_book_check"></td>
-                  <td style="padding-right: 50px;">
-                      {{ data['book']['authors'][0]|safe }}
-                  </td>
-                  <td>
-                    <a class="text-info" href="http://www.google.com/search?q={{data['book']['title'].replace(' ','+')}}" target="_blank">
-                      {{ data['book']['title']|safe }}
-                    </a>
-                  </td>
-              <tr>
-          {% elif signal == 'author' %}
-              {% for item in data['books']%}
-                <tr>
-                    <td><input type="radio" name="one" id="add_book_check"></td>
-                    <td style="padding-right: 50px;">
-                        {{ ', '.join(item['authors'][:2])|safe }}
-                    </td>
-                    <td>
-                      <a class="text-info" href="http://www.google.com/search?q={{item['title'].replace(' ','+')}}" target="_blank">
-                        {{ item['title']|safe }}
-                      </a>
-                    </td>
-                </tr>
-              {% endfor %}
-          {% elif signal == 'kw' %}
-            <td style="padding-right: 50px;">
-                {{ data['book']['authors'][0]|safe }}
-            </td>
-            <td>
-              <a class="text-info" href="http://www.google.com/search?q={{data['book']['title'].replace(' ','+')}}" target="_blank">
-                {{ data['book']['title']|safe }}
-              </a>
-            </td>
-          {% endif %}
-    </table>
-    <br>
-    <form method='post' name='add-to-db'>
-      <input type="submit" name='add' class="btn btn-secondary" value='Add'>
-    </form>
-{% else %}
-    <h5>There are no results to display</h5>
-{% endif %}
+    {% if data %}
+        <table>
+            <tr>
+                <th style="padding-right: 50px;">Add</th>
+                <th style="padding-right: 50px;">Author</th>
+                <th>Title</th>
+            </tr>
+              {% if signal == 'isbn' %}
+                  <tr>
+                      <td><input type="radio" id="add_book_check"></td>
+                      <td style="padding-right: 50px;">
+                          {{ data['book']['authors'][0]|safe }}
+                      </td>
+                      <td>
+                        <a class="text-info" href="http://www.google.com/search?q={{data['book']['title'].replace(' ','+')}}" target="_blank">
+                          {{ data['book']['title']|safe }}
+                        </a>
+                      </td>
+                  <tr>
+              {% elif signal == 'alt-search' %}
+                  {% for item in data['books']%}
+                    <tr>
+                        <td><input type="radio" name="one" id="add_book_check"></td>
+                        <td style="padding-right: 50px;">
+                            {{ ', '.join(item['authors'][:2])|safe }}
+                        </td>
+                        <td>
+                          <a class="text-info" href="http://www.google.com/search?q={{item['title'].replace(' ','+')}}" target="_blank">
+                            {{ item['title']|safe }}
+                          </a>
+                        </td>
+                    </tr>
+                  {% endfor %}
+              {% endif %}
+        </table>
+        <br>
+        <form method='post' name='add-to-db'>
+          <input type="submit" name='add' class="btn btn-secondary" value='Add'>
+        </form>
+    {% else %}
+        <h5>There are no results to display</h5>
+    {% endif %}
 {% endblock %}

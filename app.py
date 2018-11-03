@@ -4,11 +4,11 @@ import psycopg2
 import requests
 
 from flask import (Flask, render_template, request, flash, redirect,
-                    url_for, session)
+                    url_for, session, Markup)
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config
-from forms import ISBNSearchForm, AltSearchForm
+from forms import ISBNSearchForm, AltSearchForm, AddBookForm
 from dateutil.parser import parse
 
 # TODO configure database for heroku
@@ -28,6 +28,7 @@ db_name = os.environ.get('DB_NAME')
 db_user = os.environ.get('PGUSER')
 db_pass = os.environ.get('PGPASSWORD')
 db_host = os.environ.get('HOST')
+isbn_key = str(os.environ.get('ISBNDB_KEY'))
 
 
 # import models after db instantiation
@@ -40,19 +41,18 @@ def index():
     base_book='https://api.isbndb.com/book/'
     base_kw='https://api.isbndb.com/books/'
     base_auth='https://api.isbndb.com/author/'
-    isbn_key = 'o63bZoobFbrynZDVR6fX3mmsRerF0NR4aKwRkJI0'
     headers = {'X-API-KEY': isbn_key}
     max_return='?pageSize=25'
     if request.method == 'POST':
         if request.form.get('search') == 'Search':
             isbn = str(request.form['isbn'])
             response = requests.get(base_book+isbn, headers=headers)
-            json_resp = json.loads(response.text)
-            session['isbndb_results'] = json_resp
-            signal='isbn'
-            if 'errorMessage' in json_resp:
+            if response.status_code == 403:
                 flash('There was an issue locating that ISBN...idiot', 'warning')
             else:
+                json_resp = json.loads(response.text)
+                session['isbndb_results'] = json_resp
+                signal='isbn'
                 flash('Info for that shit below...', 'info')
                 return render_template('index.html',
                                        data=json_resp,
@@ -67,7 +67,7 @@ def index():
                 response = requests.get(base_kw+kw+max_return, headers=headers)
                 json_resp = json.loads(response.text)
                 session['isbndb_results'] = json_resp
-                signal='author'
+                signal='alt-search'
                 print(json_resp)
                 if 'errorMessage' in json_resp:
                     flash('The keyword there was shit, no returned results', 'warning')
@@ -78,7 +78,7 @@ def index():
                 response = requests.get(base_auth+auth+max_return, headers=headers)
                 json_resp = json.loads(response.text)
                 session['isbndb_results'] = json_resp
-                signal='author'
+                signal='alt-search'
                 if 'errorMessage' in json_resp:
                     flash('Don"t know that guy, or gal', 'warning')
                 else:
@@ -124,8 +124,10 @@ def library():
 
 @app.route('/add_book')
 def add_book():
+    add_book_form = AddBookForm()
     # TODO finish this template
-    return render_template('add_book.html')
+    return render_template('add_book.html',
+                            add_book_form=add_book_form)
 
 if __name__ == '__main__':
     app.run(debug=True)
